@@ -12,9 +12,14 @@ public class MainTransporte {
         boolean salir = false;
         while (!salir) {
             System.out.println("Selecciona una de las siguientes opciones: ");
-            System.out.println("1. Capturar datos de un propietario");
-            System.out.println("2. Calcular el total de pasajeros de un vehículo: ");
-            System.out.println("3. salir");
+            System.out.println("1. Capturar datos de un propietario: ");
+            System.out.println("2. Añadir un usuario a un vehículo de transporte: ");
+            System.out.println("3. Calcular el total de pasajeros de un vehículo: ");
+            System.out.println("4. Contar el numero de usuarios con peso mayor dado un numero: ");
+            System.out.println("5. Contar el numero de usuarios de un mismo vehiculo: ");
+            System.out.println("6. Calcular el total de propietarios mayores a 40 años: ");
+            System.out.println("7. Calcular el total de usuarios dentro de un rango de edades: ");
+            System.out.println("8. salir");
             System.out.println("opción a seleccionar: ");
             int opcion = sc.nextInt();
             sc.nextLine();
@@ -22,18 +27,60 @@ public class MainTransporte {
             switch (opcion) {
                 case 1:
                     Propietario propietario = capturarDatosPropietario();
-                    empresa.addPropietario(propietario);
-                    System.out.println("Él propietario y su vehículo han sido registrados correctamente");
+                    if(propietario != null){
+                        empresa.addPropietario(propietario);
+                        System.out.println("Él propietario y su vehículo han sido registrados correctamente");
+                    }
                     break;
 
                 case 2:
+                    System.out.println("Ingresa la placa del vehículo: ");
+                    String placaVehiculo = sc.nextLine();
+
+                    Usuario usuario = capturarDatosUsuario();
+
+                    if(empresa.addUsuarioAvehiculo(placaVehiculo, usuario)) {
+                        empresa.addUsuario(usuario);
+                        System.out.println("Él usuario ha sido registrado correctamente");
+                    }
+                    break;
+
+                case 3:
                     System.out.println("Ingresa la placa del vehículo: ");
                     String placa = sc.nextLine();
                     String totalPasajeros = empresa.calcularTotalPasajeros(placa);
                     System.out.println(totalPasajeros);
                     break;
 
-                case 3:
+                case 4:
+                    System.out.println("Ingresa un valor para el peso: ");
+                    double peso = sc.nextDouble();
+                    int usuariosConPesoMayor = empresa.usuariosConPesoMayor(peso);
+                    System.out.println("El numero de usuarios con peso mayor a: " + peso + " es de: " + usuariosConPesoMayor);
+                    break;
+
+                case 5:
+                    System.out.println("Ingresa la placa del vehiculo para saber el numero de usuarios: ");
+                    String placaUser = sc.nextLine();
+                    int usuariosXvehiculo = empresa.usuariosPorVehiculo(placaUser);
+                    System.out.println("el numero de usuarios del vehiculo con placa: " + placaUser + " es de: " + usuariosXvehiculo);
+                    break;
+
+                case 6:
+                    int mayoresA40 = empresa.propietariosMayoresA40();
+                    System.out.println("Él numero de propietarios mayores a 40 años es de: " + mayoresA40);
+                    break;
+
+                case 7:
+                    System.out.println("Ingresa el valor de la edad minima: ");
+                    int edadMinima = sc.nextInt();
+                    System.out.println("Ingresa la edad maxima: ");
+                    int edadMaxima = sc.nextInt();
+                    int usuariosDentroDeRango = empresa.usuariosEnRangoEdad(edadMinima, edadMaxima);
+                    System.out.println("El numero de usuarios en el rango de edad: " + edadMinima + " a " + edadMaxima + " es de: " + usuariosDentroDeRango);
+                    break;
+
+                case 8:
                     salir = true;
                     System.out.println("Saliendo...");
                     break;
@@ -44,8 +91,6 @@ public class MainTransporte {
         }
     }
 
-
-
     private static Propietario capturarDatosPropietario() {
         Scanner sc = new Scanner(System.in);
 
@@ -53,6 +98,9 @@ public class MainTransporte {
         String nombre = sc.nextLine();
         System.out.println("Ingresa la cédula del propietario: ");
         String cedula = sc.nextLine();
+        System.out.println("Ingresa la edad del propietario: ");
+        int edad = sc.nextInt();
+        sc.nextLine();
         System.out.println("Ingresa el email del propietario: ");
         String email = sc.nextLine();
         System.out.println("Ingresa el celular del propietario: ");
@@ -82,15 +130,30 @@ public class MainTransporte {
         } else if(tipoVehiculo.equals("transporte")) {
             System.out.println("Ingresa el número máximo de pasajeros del vehículo: ");
             int maxPasajeros = sc.nextInt();
+            sc.nextLine();
 
             vehiculo = new VehiculoTransporte(placa, modelo, marca, color, maxPasajeros);
 
         } else{
             System.out.println("Error: el tipo de vehículo debe ser 'carga' o 'transporte'");
-            System.exit(1);
+            return null;
         }
 
         sc.nextLine();
-        return new Propietario(nombre, cedula, email, celular, vehiculo);
+        return new Propietario(nombre, cedula, edad, email, celular, vehiculo);
+    }
+
+    private static Usuario capturarDatosUsuario() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Ingresa el nombre del usuario: ");
+        String nombre = sc.nextLine();
+        System.out.println("Ingresa la edad del usuario: ");
+        int edad = sc.nextInt();
+        System.out.println("Ingresa el peso del usuario: ");
+        double peso = sc.nextDouble();
+        sc.nextLine();
+
+        return new Usuario(nombre, edad, peso, null);
+
     }
 }

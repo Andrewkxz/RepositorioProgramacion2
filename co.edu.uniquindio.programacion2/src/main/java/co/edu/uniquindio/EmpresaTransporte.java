@@ -34,14 +34,24 @@ public class EmpresaTransporte {
         usuarios.add(usuario);
     }
 
-    /*private boolean verificarVehiculo(String placa){
-        Predicate<Vehiculo> placaIgual = vehiculo -> vehiculo.getPlaca().equals(placa);
-        return vehiculos
-                .stream()
-                .filter(placaIgual)
-                .findAny()
-                .isPresent();
-    }*/
+    public boolean addUsuarioAvehiculo(String placa, Usuario usuario) {
+        for (VehiculoTransporte vehiculoTransporte : vehiculoTransportes) {
+            if (vehiculoTransporte.getPlaca().equals(placa)) {
+                if(vehiculoTransporte.getNumeroUsuarios() < vehiculoTransporte.getMaxPasajeros()){
+                    vehiculoTransporte.addUsuario(usuario);
+                    usuario.setVehiculo(vehiculoTransporte);
+                    System.out.println("Se ha añadido el usuario: " + usuario.getNombre() + " al vehiculo con placa: " + vehiculoTransporte.getPlaca());
+                    return true;
+                } else {
+                    System.out.println("Error: el vehículo con placa: " + placa + " se encuentra lleno");
+                    return false;
+                }
+
+            }
+        }
+        System.out.println("Error: no se ha encontrado un el vehiculo con placa: " + placa);
+        return false;
+    }
 
     public String calcularTotalPasajeros(String placa){
         for (VehiculoTransporte vehiculo : vehiculoTransportes) {
@@ -56,4 +66,45 @@ public class EmpresaTransporte {
         }
         return "No se ha encontrado un vehículo con placa: '" + placa + "'.";
     }
+
+    public int usuariosConPesoMayor(double peso){
+        int contador = 0;
+        for (Usuario usuario : usuarios) {
+            if(usuario.getPeso() > peso){
+                contador++;
+            }
+        }
+        return contador;
+    }
+
+    public int usuariosPorVehiculo(String placa){
+        int contador = 0;
+        for(Usuario usuario : usuarios){
+            if(usuario.getVehiculo() != null && usuario.getVehiculo().getPlaca().equals(placa)){
+                contador++;
+            }
+        }
+        return contador;
+    }
+
+    public int propietariosMayoresA40(){
+        int contador = 0;
+        for (Propietario propietario : propietarios) {
+            if(propietario.getEdad() > 40){
+                contador++;
+            }
+        }
+        return contador;
+    }
+
+    public int usuariosEnRangoEdad(int edadMinima, int edadMaxima){
+        int contador = 0;
+        for (Usuario usuario : usuarios) {
+            if(usuario.getEdad() >= edadMinima && usuario.getEdad() <= edadMaxima){
+                contador++;
+            }
+        }
+        return contador;
+    }
+
 }
