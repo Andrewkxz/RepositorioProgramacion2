@@ -2,15 +2,22 @@ package co.edu.uniquindio;
 
 import java.util.Scanner;
 
+/**
+ * Clase principal, permite realizar operaciones como registrar propietarios, añadir usuarios a vehiculos y realizar calculos sobre los usuarios y propietarios registrados
+ */ 
+
 public class MainTransporte {
     public static void main(String[] args) {
 
         EmpresaTransporte empresa = new EmpresaTransporte();
 
+        // Crea un objeto Scanner para leer entradas del usuario
         Scanner sc = new Scanner(System.in);
 
         boolean salir = false;
         while (!salir) {
+            // Menú de opciones para el usuario
+
             System.out.println("Selecciona una de las siguientes opciones: ");
             System.out.println("1. Capturar datos de un propietario: ");
             System.out.println("2. Añadir un usuario a un vehículo de transporte: ");
@@ -26,6 +33,7 @@ public class MainTransporte {
 
             switch (opcion) {
                 case 1:
+                // Captura los datos del propietario y lo agrega a la empresa
                     Propietario propietario = capturarDatosPropietario();
                     if(propietario != null){
                         empresa.addPropietario(propietario);
@@ -34,6 +42,7 @@ public class MainTransporte {
                     break;
 
                 case 2:
+                // Añade un usuario a un vehiculo de transporte
                     System.out.println("Ingresa la placa del vehículo: ");
                     String placaVehiculo = sc.nextLine();
 
@@ -46,6 +55,7 @@ public class MainTransporte {
                     break;
 
                 case 3:
+                // Calcula el total de pasajeros en un vehiculo
                     System.out.println("Ingresa la placa del vehículo: ");
                     String placa = sc.nextLine();
                     String totalPasajeros = empresa.calcularTotalPasajeros(placa);
@@ -53,6 +63,7 @@ public class MainTransporte {
                     break;
 
                 case 4:
+                // Cuenta el número de usuarios con un peso mayor a un valor dado
                     System.out.println("Ingresa un valor para el peso: ");
                     double peso = sc.nextDouble();
                     int usuariosConPesoMayor = empresa.usuariosConPesoMayor(peso);
@@ -60,6 +71,7 @@ public class MainTransporte {
                     break;
 
                 case 5:
+                // Cuenta el número de usuarios registrados en un vehiculo específico
                     System.out.println("Ingresa la placa del vehiculo para saber el numero de usuarios: ");
                     String placaUser = sc.nextLine();
                     int usuariosXvehiculo = empresa.usuariosPorVehiculo(placaUser);
@@ -67,11 +79,13 @@ public class MainTransporte {
                     break;
 
                 case 6:
+                // Calcula el total de propietarios mayores a 40 años
                     int mayoresA40 = empresa.propietariosMayoresA40();
                     System.out.println("Él numero de propietarios mayores a 40 años es de: " + mayoresA40);
                     break;
 
                 case 7:
+                // Calcula el total de usuarios dentro de un rango de edades
                     System.out.println("Ingresa el valor de la edad minima: ");
                     int edadMinima = sc.nextInt();
                     System.out.println("Ingresa la edad maxima: ");
@@ -81,6 +95,7 @@ public class MainTransporte {
                     break;
 
                 case 8:
+                // Opción para salir del programa
                     salir = true;
                     System.out.println("Saliendo...");
                     break;
@@ -91,6 +106,10 @@ public class MainTransporte {
         }
     }
 
+    /**
+     * Método que captura los datos de un propietario, incluyendo su vehículo.
+     * @return un objeto de tipo Propietario con los datos capturados. o null si hay un error en la entrada.
+     */
     private static Propietario capturarDatosPropietario() {
         Scanner sc = new Scanner(System.in);
 
@@ -119,6 +138,7 @@ public class MainTransporte {
         System.out.println("Ingresa el color del vehículo: ");
         String color = sc.nextLine();
 
+        // Validación del tipo de vehiculo y captura de los datos específicos
         if(tipoVehiculo.equals("carga")) {
             System.out.println("Ingresa la capacidad del vehículo: ");
             double capacidad = sc.nextDouble();
@@ -143,6 +163,10 @@ public class MainTransporte {
         return new Propietario(nombre, cedula, edad, email, celular, vehiculo);
     }
 
+    /**
+     * Método que captura los datos de un usuario.
+     * @return un objeto de tipo Usuario con los datos capturados
+     */
     private static Usuario capturarDatosUsuario() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Ingresa el nombre del usuario: ");
