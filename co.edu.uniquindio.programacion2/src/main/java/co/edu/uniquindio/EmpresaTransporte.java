@@ -90,7 +90,7 @@ public class EmpresaTransporte {
         return contador;
     }
 
-    // metodo para contar el numero de propietarios Mayores de 40 años
+    // metodo para contar el numero de usuarios que estan asignos a un vehiculo 
     public int usuariosPorVehiculo(String placa) {
         int contador = 0;
         for (Usuario usuario : usuarios) {
@@ -101,7 +101,7 @@ public class EmpresaTransporte {
         return contador;
     }
 
-    // metodo contar el numero de propietarios ayores a 40 años
+    // metodo contar el numero de propietarios Mayores a 40 años
     public int propietariosMayoresA40() {
         int contador = 0;
         for (Propietario propietario : propietarios) {
